@@ -6,6 +6,8 @@ use App\Filament\Resources\HeroResource\Pages;
 use App\Filament\Resources\HeroResource\RelationManagers;
 use App\Models\Hero;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,23 +25,32 @@ class HeroResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->maxSize(5120)
                     ->required(),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('subtitle')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('link1')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('link2')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
+                Fieldset::make('Detail')
+                    ->schema([
+                        Forms\Components\RichEditor::make('title')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\RichEditor::make('subtitle')
+                            ->required()
+                            ->maxLength(255),
+                    ]),
+                Fieldset::make('Link')
+                    ->schema([
+
+                        Forms\Components\TextInput::make('link1')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('link2')
+                            ->required()
+                            ->maxLength(255),
+                    ]),
             ]);
     }
 
@@ -49,15 +60,23 @@ class HeroResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('subtitle')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('link1')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('link2')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->afterStateUpdated(function ($record, $state) {
+                        if ($state) {
+                            Hero::where('id', '!=', $record->id)->update(['is_active' => false]);
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -72,7 +91,7 @@ class HeroResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -23,7 +23,7 @@ class HeroFactory extends Factory
         return [
             'image' => $this->faker->imageUrl(),
             'title' => $this->faker->sentence(4),
-            'subtitle' => $this->faker->word(),
+            'subtitle' => $this->faker->sentence(10),
             'link1' => $this->faker->url(),
             'link2' => $this->faker->url(),
             'is_active' => $this->faker->boolean(),

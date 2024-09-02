@@ -29,9 +29,8 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('subtitle')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('icon')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\FileUpload::make('icon')
+                    ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
                 Forms\Components\TextInput::make('sort')
@@ -48,7 +47,7 @@ class ServiceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subtitle')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('icon')
+                Tables\Columns\ImageColumn::make('icon')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
