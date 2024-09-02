@@ -31,6 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->passwordreset()
             ->emailVerification()
             ->profile()
+            ->plugin(
+                \Hasnayeen\Themes\ThemesPlugin::make()
+            )
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -54,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
             ->authMiddleware([
                 Authenticate::class,

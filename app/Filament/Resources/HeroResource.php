@@ -34,10 +34,10 @@ class HeroResource extends Resource
                     ->required(),
                 Fieldset::make('Detail')
                     ->schema([
-                        Forms\Components\RichEditor::make('title')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('subtitle')
+                        Forms\Components\TextInput::make('subtitle')
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -61,10 +61,12 @@ class HeroResource extends Resource
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->wrap(),
+                    ->wrap()
+                    ->html(),
                 Tables\Columns\TextColumn::make('subtitle')
                     ->searchable()
-                    ->wrap(),
+                    ->wrap()
+                    ->html(),
                 Tables\Columns\TextColumn::make('link1')
                     ->searchable()
                     ->wrap(),
